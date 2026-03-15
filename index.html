@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>daily note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:#f5f0ea;padding:0;-webkit-tap-highlight-color:transparent;}
+.wrap{max-width:480px;margin:0 auto;min-height:100vh;}
+
+.app-header{background:#fffaf5;border-bottom:1px solid #e8ddd3;padding:16px 18px 0;position:sticky;top:0;z-index:100;}
+.header-top{display:flex;align-items:baseline;gap:8px;margin-bottom:14px;}
+.app-name{font-family:'DM Serif Display',serif;font-size:20px;color:#4a3728;letter-spacing:.04em;font-weight:700;}
+.app-sub{font-size:11px;color:#a8917e;}
+
+.tabs{display:flex;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:10px 15px;border:none;background:transparent;font-family:'DM Serif Display',serif;font-size:13px;color:#a8917e;cursor:pointer;border-bottom:2.5px solid transparent;letter-spacing:.04em;position:relative;bottom:-1px;transition:color .15s;}
+.tab.active{color:#4a3728;border-bottom-color:#c0624a;}
+.badge{font-family:'Noto Sans JP',sans-serif;font-size:10px;font-weight:500;padding:1px 6px;border-radius:999px;background:#ede4db;color:#a8917e;min-width:18px;text-align:center;}
+.tab.active .badge{background:#c0624a;color:#fff;}
+
+.main{padding:20px 16px 60px;}
+
+.sec-header{display:flex;align-items:baseline;gap:10px;margin-bottom:18px;}
+.sec-title{font-family:'DM Serif Display',serif;font-size:28px;color:#4a3728;letter-spacing:.02em;font-weight:700;}
+.sec-sub{font-size:13px;color:#b8a090;}
+
+.items-list{margin-bottom:10px;}
+
+.item{background:#fffaf5;border:1px solid #e8ddd3;border-radius:11px;padding:14px 16px;margin-bottom:10px;}
+.item.done{opacity:.48;}
+.item-text{font-size:15px;line-height:1.78;color:#4a3728;margin-bottom:9px;white-space:pre-wrap;word-break:break-word;}
+.item.done .item-text{text-decoration:line-through;color:#c4afa0;}
+
+.item-edit-area{display:none;margin-bottom:9px;}
+.item-edit-area textarea{width:100%;font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.78;color:#4a3728;background:#f5f0ea;border:1px solid #d4c4b8;border-radius:8px;padding:8px 10px;resize:vertical;min-height:72px;}
+.item-edit-area textarea:focus{outline:none;border-color:#c0624a;}
+
+.item-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.meta{font-size:11px;color:#c8b5a5;}
+.meta span{color:#9a7e6e;}
+.deadline-badge{font-size:11px;padding:2px 9px;border-radius:999px;background:#fdf0ec;color:#c0624a;border:1px solid #e8c0b0;}
+.deadline-badge.overdue{background:#fdf0f0;color:#b05050;border-color:#f0cece;}
+
+.actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.btn{font-size:11px;font-weight:500;padding:4px 11px;border-radius:999px;border:1px solid #e8ddd3;background:transparent;color:#a8917e;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:background .12s;}
+.btn:hover{background:#f5f0ea;}
+.btn:active{transform:scale(.97);}
+.btn-save{color:#c0624a;border-color:#e8c0b0;}
+.btn-save:hover{background:#fdf0ec;}
+.btn-del{color:#b05a5a;border-color:#f0d0d0;}
+.btn-del:hover{background:#fdf0f0;}
+select.btn{padding:4px 8px;}
+
+.add-form{background:#fffaf5;border:1.5px dashed #d4c4b8;border-radius:11px;padding:14px 16px;}
+.add-form textarea{width:100%;font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.78;color:#4a3728;background:transparent;border:none;resize:none;min-height:58px;padding:0;}
+.add-form textarea:focus{outline:none;}
+.add-form textarea::placeholder{color:#d4c4b8;}
+.dl-row{display:flex;align-items:center;gap:8px;margin-top:9px;padding-top:9px;border-top:1px solid #ede4db;}
+.dl-label{font-size:12px;color:#b8a090;}
+.dl-input{font-size:12px;padding:3px 8px;border-radius:6px;border:1px solid #e8ddd3;color:#7a5c4a;background:#f5f0ea;font-family:'Noto Sans JP',sans-serif;}
+.add-footer{display:flex;justify-content:flex-end;margin-top:10px;}
+.btn-add{font-family:'DM Serif Display',serif;font-size:14px;font-weight:700;padding:7px 22px;border-radius:999px;border:none;background:#c0624a;color:#fffaf5;cursor:pointer;letter-spacing:.04em;transition:background .15s;}
+.btn-add:hover{background:#a8503c;}
+.btn-add:active{transform:scale(.97);}
+
+.empty-state{text-align:center;padding:28px 0 20px;color:#c8b5a5;font-size:13px;line-height:1.8;}
+.swipe-hint{text-align:center;font-size:11px;color:#c8b5a5;margin-top:32px;}
+.section-panel{display:none;}
+.section-panel.active{display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="app-header">
+    <div class="header-top">
+      <span class="app-name">daily note</span>
+      <span class="app-sub">/ 日常メモ</span>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-section="DO">DO <span class="badge" id="badge-DO">0</span></button>
+      <button class="tab" data-section="IDEA">IDEA <span class="badge" id="badge-IDEA">0</span></button>
+      <button class="tab" data-section="RESEARCH">RESEARCH <span class="badge" id="badge-RESEARCH">0</span></button>
+      <button class="tab" data-section="PARK">PARK <span class="badge" id="badge-PARK">0</span></button>
+      <button class="tab" data-section="COMPLETE">COMPLETE <span class="badge" id="badge-COMPLETE">0</span></button>
+    </div>
+  </div>
+
+  <div class="main" id="main">
+
+    <div class="section-panel active" id="panel-DO">
+      <div class="sec-header"><span class="sec-title">DO</span><span class="sec-sub">行動</span></div>
+      <div class="items-list" id="list-DO"></div>
+      <div class="add-form">
+        <textarea id="input-DO" placeholder="やることを入力...&#10;複数行OK"></textarea>
+        <div class="dl-row">
+          <span class="dl-label">期限</span>
+          <input type="date" id="deadline-DO" class="dl-input">
+        </div>
+        <div class="add-footer"><button class="btn-add" onclick="addItem('DO')">追加</button></div>
+      </div>
+    </div>
+
+    <div class="section-panel" id="panel-IDEA">
+      <div class="sec-header"><span class="sec-title">IDEA</span><span class="sec-sub">構想</span></div>
+      <div class="items-list" id="list-IDEA"></div>
+      <div class="add-form">
+        <textarea id="input-IDEA" placeholder="アイデアを入力...&#10;複数行OK"></textarea>
+        <div class="add-footer"><button class="btn-add" onclick="addItem('IDEA')">追加</button></div>
+      </div>
+    </div>
+
+    <div class="section-panel" id="panel-RESEARCH">
+      <div class="sec-header"><span class="sec-title">RESEARCH</span><span class="sec-sub">調査</span></div>
+      <div class="items-list" id="list-RESEARCH"></div>
+      <div class="add-form">
+        <textarea id="input-RESEARCH" placeholder="調べることを入力...&#10;複数行OK"></textarea>
+        <div class="add-footer"><button class="btn-add" onclick="addItem('RESEARCH')">追加</button></div>
+      </div>
+    </div>
+
+    <div class="section-panel" id="panel-PARK">
+      <div class="sec-header"><span class="sec-title">PARK</span><span class="sec-sub">保留</span></div>
+      <div class="items-list" id="list-PARK"></div>
+      <div class="add-form">
+        <textarea id="input-PARK" placeholder="保留にすることを入力...&#10;複数行OK"></textarea>
+        <div class="add-footer"><button class="btn-add" onclick="addItem('PARK')">追加</button></div>
+      </div>
+    </div>
+
+    <div class="section-panel" id="panel-COMPLETE">
+      <div class="sec-header"><span class="sec-title">COMPLETE</span><span class="sec-sub">完了</span></div>
+      <div class="items-list" id="list-COMPLETE"></div>
+      <div class="empty-state" id="complete-empty" style="display:none;">まだ完了した項目がありません</div>
+    </div>
+
+    <p class="swipe-hint">← スワイプでセクション移動 →</p>
+  </div>
+</div>
+
+<script>
+const SECTIONS = ['DO','IDEA','RESEARCH','PARK','COMPLETE'];
+const STORAGE_KEY = 'daily_note_v1';
+let data = {DO:[],IDEA:[],RESEARCH:[],PARK:[],COMPLETE:[]};
+let currentSection = 'DO';
+
+function load() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) { try { data = JSON.parse(saved); } catch(e){} }
+  SECTIONS.forEach(s => { if (!data[s]) data[s] = []; });
+}
+
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+function today() {
+  const d = new Date();
+  return d.getFullYear() + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0');
+}
+
+function isOverdue(dl) {
+  if (!dl) return false;
+  const t = new Date(); t.setHours(0,0,0,0);
+  const d = new Date(dl); d.setHours(0,0,0,0);
+  return d < t;
+}
+
+function fmtDeadline(dl) {
+  if (!dl) return '';
+  const [y,m,d] = dl.split('-');
+  return m + '/' + d;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderAll() { SECTIONS.forEach(s => renderSection(s)); updateBadges(); }
+
+function renderSection(sec) {
+  const list = document.getElementById('list-' + sec);
+  list.innerHTML = '';
+  const items = data[sec];
+  if (items.length === 0) {
+    list.innerHTML = '<div class="empty-state">まだ項目がありません</div>';
+    return;
+  }
+  items.forEach(item => list.appendChild(makeItemEl(item, sec)));
+}
+
+function makeItemEl(item, sec) {
+  const div = document.createElement('div');
+  div.className = 'item' + (item.done ? ' done' : '');
+  div.dataset.id = item.id;
+
+  const others = SECTIONS.filter(s => s !== sec);
+  const moveOpts = others.map(s => `<option value="${s}">${s}</option>`).join('');
+
+  const deadlineMeta = (sec === 'DO' && item.deadline)
+    ? `<span class="deadline-badge${isOverdue(item.deadline) ? ' overdue' : ''}">期限 ${fmtDeadline(item.deadline)}</span>`
+    : '';
+
+  const editDeadlineRow = sec === 'DO'
+    ? `<div class="dl-row" style="margin-top:8px;padding-top:8px;border-top:1px solid #eef1f5;">
+        <span class="dl-label">期限</span>
+        <input type="date" class="dl-input edit-deadline" value="${item.deadline || ''}">
+       </div>`
+    : '';
+
+  div.innerHTML = `
+    <div class="item-text">${escHtml(item.text)}</div>
+    <div class="item-edit-area">
+      <textarea class="edit-ta">${escHtml(item.text)}</textarea>
+      ${editDeadlineRow}
+    </div>
+    <div class="item-meta">
+      <span class="meta">記入 <span>${item.created}</span></span>
+      ${deadlineMeta}
+    </div>
+    <div class="actions">
+      <button class="btn btn-edit" onclick="startEdit(this)">編集</button>
+      <button class="btn btn-save" style="display:none" onclick="saveEdit('${sec}','${item.id}',this)">保存</button>
+      <button class="btn" style="display:none" onclick="cancelEdit(this)">キャンセル</button>
+      <select class="btn" onchange="moveItem('${sec}','${item.id}',this.value)">
+        <option value="">→ 移動</option>${moveOpts}
+      </select>
+      <button class="btn btn-del" onclick="deleteItem('${sec}','${item.id}')">削除</button>
+    </div>
+  `;
+  return div;
+}
+
+function updateBadges() {
+  SECTIONS.forEach(s => {
+    const count = s === 'COMPLETE' ? data[s].length : data[s].filter(i => !i.done).length;
+    document.getElementById('badge-' + s).textContent = count;
+  });
+}
+
+function addItem(sec) {
+  const ta = document.getElementById('input-' + sec);
+  const text = ta.value.trim();
+  if (!text) return;
+  const dlInput = document.getElementById('deadline-' + sec);
+  const deadline = dlInput ? dlInput.value : '';
+  data[sec].push({ id: uid(), text, created: today(), deadline, done: false });
+  save();
+  ta.value = '';
+  if (dlInput) dlInput.value = '';
+  renderSection(sec);
+  updateBadges();
+}
+
+function deleteItem(sec, id) {
+  data[sec] = data[sec].filter(i => i.id !== id);
+  save(); renderSection(sec); updateBadges();
+}
+
+function moveItem(sec, id, dest) {
+  if (!dest) return;
+  const idx = data[sec].findIndex(i => i.id === id);
+  if (idx === -1) return;
+  const item = data[sec].splice(idx, 1)[0];
+  item.done = dest === 'COMPLETE';
+  data[dest].push(item);
+  save(); renderSection(sec); renderSection(dest); updateBadges();
+}
+
+function startEdit(btn) {
+  const el = btn.closest('.item');
+  el.querySelector('.item-text').style.display = 'none';
+  el.querySelector('.item-edit-area').style.display = 'block';
+  const ta = el.querySelector('.edit-ta');
+  ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px';
+  btn.style.display = 'none';
+  el.querySelector('.btn-save').style.display = '';
+  el.querySelectorAll('.actions .btn')[2].style.display = '';
+  el.querySelector('select.btn').style.display = 'none';
+  el.querySelector('.btn-del').style.display = 'none';
+}
+
+function saveEdit(sec, id, btn) {
+  const el = btn.closest('.item');
+  const newText = el.querySelector('.edit-ta').value.trim();
+  if (!newText) return;
+  const item = data[sec].find(i => i.id === id);
+  if (!item) return;
+  item.text = newText;
+  const dlEl = el.querySelector('.edit-deadline');
+  if (dlEl) item.deadline = dlEl.value;
+  save(); renderSection(sec);
+}
+
+function cancelEdit(btn) {
+  const el = btn.closest('.item');
+  el.querySelector('.item-text').style.display = '';
+  el.querySelector('.item-edit-area').style.display = 'none';
+  el.querySelector('.btn-save').style.display = 'none';
+  btn.style.display = 'none';
+  el.querySelector('.btn-edit').style.display = '';
+  el.querySelector('select.btn').style.display = '';
+  el.querySelector('.btn-del').style.display = '';
+}
+
+function switchSection(sec) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.section === sec));
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + sec));
+  currentSection = sec;
+}
+
+document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => switchSection(tab.dataset.section)));
+
+['DO','IDEA','RESEARCH','PARK'].forEach(s => {
+  const ta = document.getElementById('input-' + s);
+  if (ta) ta.addEventListener('keydown', e => { if (e.key==='Enter' && (e.metaKey||e.ctrlKey)) addItem(s); });
+});
+
+let touchStartX = 0, touchStartY = 0;
+document.getElementById('main').addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
+}, {passive:true});
+document.getElementById('main').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx)) return;
+  const idx = SECTIONS.indexOf(currentSection);
+  if (dx < 0 && idx < SECTIONS.length-1) switchSection(SECTIONS[idx+1]);
+  if (dx > 0 && idx > 0) switchSection(SECTIONS[idx-1]);
+}, {passive:true});
+
+load(); renderAll();
+</script>
+</body>
+</html>

@@ -4,71 +4,71 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>daily note</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Noto Sans JP',sans-serif;background:#f5f0ea;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Noto Sans JP',sans-serif;background:#f7f5f2;padding:0;-webkit-tap-highlight-color:transparent;}
 .wrap{max-width:480px;margin:0 auto;min-height:100vh;}
 
-.app-header{background:#fffaf5;border-bottom:1px solid #e8ddd3;padding:16px 18px 0;position:sticky;top:0;z-index:100;}
+.app-header{background:#ffffff;border-bottom:1px solid #e0dbd4;padding:16px 18px 0;position:sticky;top:0;z-index:100;}
 .header-top{display:flex;align-items:baseline;gap:8px;margin-bottom:14px;}
-.app-name{font-family:'DM Serif Display',serif;font-size:20px;color:#4a3728;letter-spacing:.04em;font-weight:700;}
-.app-sub{font-size:11px;color:#a8917e;}
+.app-name{font-family:'Noto Sans JP',sans-serif;font-size:20px;color:#2a3d2e;letter-spacing:.04em;font-weight:500;}
+.app-sub{font-size:11px;color:#8a9e8e;}
 
 .tabs{display:flex;overflow-x:auto;scrollbar-width:none;}
 .tabs::-webkit-scrollbar{display:none;}
-.tab{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:10px 15px;border:none;background:transparent;font-family:'DM Serif Display',serif;font-size:13px;color:#a8917e;cursor:pointer;border-bottom:2.5px solid transparent;letter-spacing:.04em;position:relative;bottom:-1px;transition:color .15s;}
-.tab.active{color:#4a3728;border-bottom-color:#c0624a;}
-.badge{font-family:'Noto Sans JP',sans-serif;font-size:10px;font-weight:500;padding:1px 6px;border-radius:999px;background:#ede4db;color:#a8917e;min-width:18px;text-align:center;}
-.tab.active .badge{background:#c0624a;color:#fff;}
+.tab{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:10px 15px;border:none;background:transparent;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:#8a9e8e;cursor:pointer;border-bottom:2.5px solid transparent;letter-spacing:.04em;position:relative;bottom:-1px;transition:color .15s;}
+.tab.active{color:#2a3d2e;border-bottom-color:#3a5240;}
+.badge{font-family:'Noto Sans JP',sans-serif;font-size:10px;font-weight:500;padding:1px 6px;border-radius:999px;background:#e4ece5;color:#6a8a70;min-width:18px;text-align:center;}
+.tab.active .badge{background:#3a5240;color:#fff;}
 
 .main{padding:20px 16px 60px;}
 
 .sec-header{display:flex;align-items:baseline;gap:10px;margin-bottom:18px;}
-.sec-title{font-family:'DM Serif Display',serif;font-size:28px;color:#4a3728;letter-spacing:.02em;font-weight:700;}
-.sec-sub{font-size:13px;color:#b8a090;}
+.sec-title{font-family:'Noto Sans JP',sans-serif;font-size:28px;color:#2a3d2e;letter-spacing:.02em;font-weight:500;}
+.sec-sub{font-size:13px;color:#8a9e8e;}
 
 .items-list{margin-bottom:10px;}
 
-.item{background:#fffaf5;border:1px solid #e8ddd3;border-radius:11px;padding:14px 16px;margin-bottom:10px;}
+.item{background:#ffffff;border:1px solid #e0dbd4;border-radius:11px;padding:14px 16px;margin-bottom:10px;}
 .item.done{opacity:.48;}
-.item-text{font-size:15px;line-height:1.78;color:#4a3728;margin-bottom:9px;white-space:pre-wrap;word-break:break-word;}
-.item.done .item-text{text-decoration:line-through;color:#c4afa0;}
+.item-text{font-size:15px;line-height:1.78;color:#2a3d2e;margin-bottom:9px;white-space:pre-wrap;word-break:break-word;}
+.item.done .item-text{text-decoration:line-through;color:#aab4aa;}
 
 .item-edit-area{display:none;margin-bottom:9px;}
-.item-edit-area textarea{width:100%;font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.78;color:#4a3728;background:#f5f0ea;border:1px solid #d4c4b8;border-radius:8px;padding:8px 10px;resize:vertical;min-height:72px;}
-.item-edit-area textarea:focus{outline:none;border-color:#c0624a;}
+.item-edit-area textarea{width:100%;font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.78;color:#2a3d2e;background:#f7f5f2;border:1px solid #cdd5ce;border-radius:8px;padding:8px 10px;resize:vertical;min-height:72px;}
+.item-edit-area textarea:focus{outline:none;border-color:#3a5240;}
 
 .item-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
-.meta{font-size:11px;color:#c8b5a5;}
-.meta span{color:#9a7e6e;}
-.deadline-badge{font-size:11px;padding:2px 9px;border-radius:999px;background:#fdf0ec;color:#c0624a;border:1px solid #e8c0b0;}
+.meta{font-size:11px;color:#b4c0b5;}
+.meta span{color:#6a8a70;}
+.deadline-badge{font-size:11px;padding:2px 9px;border-radius:999px;background:#eaf2eb;color:#3a5240;border:1px solid #b8d4bc;}
 .deadline-badge.overdue{background:#fdf0f0;color:#b05050;border-color:#f0cece;}
 
 .actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-.btn{font-size:11px;font-weight:500;padding:4px 11px;border-radius:999px;border:1px solid #e8ddd3;background:transparent;color:#a8917e;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:background .12s;}
-.btn:hover{background:#f5f0ea;}
+.btn{font-size:11px;font-weight:500;padding:4px 11px;border-radius:999px;border:1px solid #e0dbd4;background:transparent;color:#6a8a70;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:background .12s;}
+.btn:hover{background:#f7f5f2;}
 .btn:active{transform:scale(.97);}
-.btn-save{color:#c0624a;border-color:#e8c0b0;}
-.btn-save:hover{background:#fdf0ec;}
+.btn-save{color:#3a5240;border-color:#b8d4bc;}
+.btn-save:hover{background:#eaf2eb;}
 .btn-del{color:#b05a5a;border-color:#f0d0d0;}
 .btn-del:hover{background:#fdf0f0;}
 select.btn{padding:4px 8px;}
 
-.add-form{background:#fffaf5;border:1.5px dashed #d4c4b8;border-radius:11px;padding:14px 16px;}
-.add-form textarea{width:100%;font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.78;color:#4a3728;background:transparent;border:none;resize:none;min-height:58px;padding:0;}
+.add-form{background:#ffffff;border:1.5px dashed #cdd5ce;border-radius:11px;padding:14px 16px;}
+.add-form textarea{width:100%;font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.78;color:#2a3d2e;background:transparent;border:none;resize:none;min-height:58px;padding:0;}
 .add-form textarea:focus{outline:none;}
-.add-form textarea::placeholder{color:#d4c4b8;}
-.dl-row{display:flex;align-items:center;gap:8px;margin-top:9px;padding-top:9px;border-top:1px solid #ede4db;}
-.dl-label{font-size:12px;color:#b8a090;}
-.dl-input{font-size:12px;padding:3px 8px;border-radius:6px;border:1px solid #e8ddd3;color:#7a5c4a;background:#f5f0ea;font-family:'Noto Sans JP',sans-serif;}
+.add-form textarea::placeholder{color:#cdd5ce;}
+.dl-row{display:flex;align-items:center;gap:8px;margin-top:9px;padding-top:9px;border-top:1px solid #e8ece8;}
+.dl-label{font-size:12px;color:#8a9e8e;}
+.dl-input{font-size:12px;padding:3px 8px;border-radius:6px;border:1px solid #e0dbd4;color:#3a5240;background:#f7f5f2;font-family:'Noto Sans JP',sans-serif;}
 .add-footer{display:flex;justify-content:flex-end;margin-top:10px;}
-.btn-add{font-family:'DM Serif Display',serif;font-size:14px;font-weight:700;padding:7px 22px;border-radius:999px;border:none;background:#c0624a;color:#fffaf5;cursor:pointer;letter-spacing:.04em;transition:background .15s;}
-.btn-add:hover{background:#a8503c;}
+.btn-add{font-family:'Noto Sans JP',sans-serif;font-size:14px;font-weight:500;padding:7px 22px;border-radius:999px;border:none;background:#3a5240;color:#ffffff;cursor:pointer;letter-spacing:.04em;transition:background .15s;}
+.btn-add:hover{background:#2a3d2e;}
 .btn-add:active{transform:scale(.97);}
 
-.empty-state{text-align:center;padding:28px 0 20px;color:#c8b5a5;font-size:13px;line-height:1.8;}
-.swipe-hint{text-align:center;font-size:11px;color:#c8b5a5;margin-top:32px;}
+.empty-state{text-align:center;padding:28px 0 20px;color:#b4c0b5;font-size:13px;line-height:1.8;}
+.swipe-hint{text-align:center;font-size:11px;color:#b4c0b5;margin-top:32px;}
 .section-panel{display:none;}
 .section-panel.active{display:block;}
 </style>
